@@ -14,31 +14,39 @@
                     <v-flex xs12 sm2 d-flex><h4 style='color:#999; font-size:17px; font-weight: normal;' ref='landArea'>ขนาดที่ดิน *</h4></v-flex>
                 </v-layout>
                 <v-layout wrap row justify-center>
-                    <v-flex xs12 sm2 d-flex><v-text-field suffix="ไร่" v-model='main.landArea.rai' placeholder="0"></v-text-field></v-flex>
+                    <v-flex xs12 sm2 d-flex><v-text-field suffix="ไร่" v-model='main.landArea.rai' type='number' min=1 placeholder="0"></v-text-field></v-flex>
                 </v-layout>
                 <v-layout wrap row justify-center>
-                    <v-flex xs12 sm2 d-flex><v-text-field suffix="งาน" v-model='main.landArea.ngan' placeholder="0"></v-text-field></v-flex>
+                    <v-flex xs12 sm2 d-flex><v-text-field suffix="งาน" v-model='main.landArea.ngan' type='number' min=1 placeholder="0"></v-text-field></v-flex>
                 </v-layout>
                 <v-layout wrap row justify-center>
-                    <v-flex xs12 sm2 d-flex><v-text-field suffix="ตารางวา" v-model='main.landArea.squareWa' placeholder="0"></v-text-field></v-flex>
+                    <v-flex xs12 sm2 d-flex><v-text-field suffix="ตารางวา" v-model='main.landArea.squareWa' type='number' min=1 placeholder="0"></v-text-field></v-flex>
                 </v-layout>
             </div> 
 
             <div v-else>
                 <v-layout wrap row justify-center v-if='estateType!="อาคารพาณิชย์" && estateType!="คอนโด"'>  
-                    <v-flex xs12 sm3 d-flex><v-form ref='houseArea'><v-text-field label="ขนาดที่ดิน (ตารางเมตร) *" v-model='main.houseArea' placeholder="0" type='number' min=1 :rules="[() => !!main.houseArea || 'จำเป็น', () => main.houseArea >= 10 || '10 ขึ้นไป']"></v-text-field></v-form></v-flex>
+                    <v-flex xs12 sm3 d-flex><v-form ref='houseArea'>
+                        <v-text-field label="ขนาดที่ดิน (ตารางเมตร) *" v-model='main.houseArea' placeholder="0" type='number' min=1 :rules="[() => !!main.houseArea || 'จำเป็น', () => main.houseArea >= 10 || '10 ขึ้นไป']"></v-text-field>
+                    </v-form></v-flex>
                 </v-layout>
                 <v-layout style="margin-bottom:40px;"/>
                 <v-layout wrap row justify-center>  
-                    <v-flex xs12 sm3 d-flex><v-form ref='ruleArea'><v-text-field label="พื้นที่ใช้สอย *" suffix="ตารางเมตร" v-model='main.area' placeholder="0" type='number' min=1 :rules="[() => !!main.area || 'จำเป็น', () => main.area >= 10 || '10 ขึ้นไป']"></v-text-field></v-form></v-flex>
+                    <v-flex xs12 sm3 d-flex><v-form ref='ruleArea'>
+                        <v-text-field label="พื้นที่ใช้สอย *" suffix="ตารางเมตร" v-model='main.area' placeholder="0" type='number' min=1 :rules="[() => !!main.area || 'จำเป็น', () => main.area >= 10 || '10 ขึ้นไป']"></v-text-field>
+                    </v-form></v-flex>
                 </v-layout>
                 <v-layout wrap row justify-center> 
                     <v-flex xs6 sm2 d-flex style="margin-right:24px;"><v-text-field label="กว้าง" v-model='main.width' suffix="เมตร"  type='number' min=1></v-text-field></v-flex>
                     <v-flex xs6 sm2 d-flex><v-text-field label="ยาว" v-model='main.height' suffix="เมตร" type='number'></v-text-field></v-flex>
                 </v-layout>
                 <v-layout wrap row justify-center> 
-                    <v-flex xs6 sm2 d-flex style="margin-right:24px;"><v-text-field label="จำนวนชั้นทั้งหมด" v-model='main.allFloors' type='number' min=1></v-text-field></v-flex>
-                    <v-flex xs6 sm2 d-flex v-if='estateType=="อาคารพาณิชย์" || estateType=="คอนโด"'><v-form ref='ruleFloorNo'><v-text-field flat label="อยู่ชั้น *" v-model='main.floorNo' type='number' min=1 :rules="[() => main.floorNo >=1 || '1 ขึ้นไป']"></v-text-field><span style="display:none; color: red; font-style:italic" ref='floorsCheck'>เลขชั้นที่อยู่ต้องน้อยกว่าจำนวนชั้นทั้งหมด</span></v-form></v-flex>
+                    <v-flex xs6 sm2 d-flex style="margin-right:24px;"><v-form ref='ruleAllFloor'>
+                        <v-text-field label="จำนวนชั้นทั้งหมด" v-model='main.allFloors' type='number' min=1 :rules="[() => main.allFloors <= 300 || 'จำวนวนชั้นมากเกินไป']"></v-text-field>
+                    </v-form></v-flex>
+                    <v-flex xs6 sm2 d-flex v-if='estateType=="อาคารพาณิชย์" || estateType=="คอนโด"'><v-form ref='ruleFloorNo'>
+                        <v-text-field flat label="อยู่ชั้น *" v-model='main.floorNo' type='number' min=1 :rules="[() => main.floorNo >=1 || '1 ขึ้นไป']"></v-text-field><span style="display:none; color: red; font-style:italic" ref='floorsCheck'>เลขชั้นที่อยู่ต้องน้อยกว่าจำนวนชั้นทั้งหมด</span>
+                    </v-form></v-flex>
                 </v-layout>
                 <v-layout style="margin-bottom:40px;"/>
                 <v-layout wrap row justify-center  v-if='estateType!="อาคารพาณิชย์"'>
@@ -62,7 +70,7 @@
 
                 <div v-if='sellType=="ขาย"'>
                     <v-layout wrap row justify-center>  
-                        <v-flex xs12 sm3 d-flex><v-text-field v-model='main.price' label="ราคาขาย" suffix='บาท'></v-text-field></v-flex>
+                        <v-flex xs12 sm3 d-flex><v-form ref='sellRule'><v-text-field v-model='main.price' label="ราคาขาย" suffix='บาท' :rules="[() => main.price > 0 || 'จำเป็น']"></v-text-field></v-form></v-flex>
                     </v-layout>
 
                      <v-layout wrap row justify-center style='padding:0 10px 0 10px;' v-if='estateType=="ที่ดินเปล่า"'>  
@@ -84,9 +92,9 @@
                     </v-layout>
                 </div> 
 
-                <div v-else>
+                <div v-if='sellType=="เช่า"'>
                     <v-layout wrap row justify-center>  
-                        <v-flex xs12 sm3 d-flex><v-text-field v-model='main.price' label="ราคาเช่า" placeholder="0" suffix='บาทต่อเดือน'></v-text-field></v-flex>
+                        <v-flex xs12 sm3 d-flex><v-form ref='sellRule'><v-text-field v-model='main.price' label="ราคาเช่า" placeholder="0" suffix='บาทต่อเดือน' :rules="[() => main.price > 0 || 'จำเป็น']"></v-text-field></v-form></v-flex>
                     </v-layout>
 
                     <v-layout wrap row justify-center style='padding:0 10px 0 10px;'>  
@@ -151,12 +159,12 @@
                         <v-flex xs12 sm12 d-flex><h4 style='color: #888; font-size: 17px; font-weight: normal; border-bottom: 1px solid #bbb; padding-bottom: 8px; margin: 30px 0 20px 0;'>กำหนดเอง</h4></v-flex>
                     </v-layout>
                     <v-layout justify-center>
-                    <v-flex sm12 md9>
+                    <v-flex sm12 md9><v-form ref="ownerRule">
                         <v-textarea 
                         v-model="other.owner" label="รายละเอียดเกี่ยวกับประกาศ *" height='400px' hint="ไม่มีรูปแบบ กำหนดเองได้เลย" :counter="1000"
                         :rules="[() => !!other.owner || 'จำเป็น',() => other.owner.length <= 1000 || 'ไม่เกิน 1000 ตัวอักษร']">
                         </v-textarea>
-                    </v-flex>
+                    </v-form></v-flex>
                     </v-layout>
                 </div>
                 
@@ -207,9 +215,9 @@ export default {
             height: '',
             houseArea: '',
             landArea: {
-                rai: 0,
-                ngan: 0,
-                squareWa: 0
+                rai: null,
+                ngan: null,
+                squareWa: null
             },
             bedrooms: '',
             bathrooms: '',
@@ -246,30 +254,60 @@ export default {
         checkData() {
             let pass = true
 
+            // เฉพาะไม่ใช่ที่ดินเปล่า
             if (this.estateType != 'ที่ดินเปล่า') {
                 if (this.estateType == 'คอนโด' || this.estateType == 'อาคารพาณิชย์') {
+                    // เช็คหมายเลขชั้น
                     this.$refs.ruleFloorNo.validate()
+                    // เช็คหมายเลขชั้นต้องมากกว่า 0
                     if (this.main.floorNo <= 0) pass = false 
+                    // เช็คจำนวนชั้นทั้งหมดสูงสุด (ถ้ากรอก)
                     if (this.main.allFloors) {  
-                        if (this.main.floorNo > this.main.allFloors) {
-                            this.$refs.floorsCheck.style.display = 'block'
-                            pass = false 
-                            
-                        }
+                        this.$refs.ruleAllFloor.validate()
+                        if (this.main.allFloors > 300) pass = false
+
+                        // ** does't work เช็คหมายเลขชั้นต้องน้อยกว่าเช็คจำนวนชั้นทั้งหมด
+
+                        // if (this.main.allFloors < this.main.floorNo) {
+                        //     this.$refs.floorsCheck.style.display = 'block'
+                        //     pass = false 
+                        // }
+
                     }
                 }
                 if (this.estateType != 'คอนโด' && this.estateType != 'อาคารพาณิชย์') {
+                    // เช็คพื้นที่ทั้งหมด ต้องกรอก ไม่น้อยกว่า 10 ตารางเมตร (ไม่ใช่คอนโด, อาคารพาณิชย์)
                     this.$refs.houseArea.validate() 
-                    if (this.main.houseArea != 0 || this.main.houseArea < 10) pass = false  
+                    if (!this.main.houseArea || this.main.houseArea < 10) pass = false  
+                    // พื้นที่ใช้สอยต้องน้อยกว่าพื้นที่ทั้งหมด ยังไม่ได้ทำ
                 }
+                // เช็คพื้นที่ใช้สอย
                 this.$refs.ruleArea.validate()
                 if(this.main.area < 10) pass = false
+                // รายละเอียดแบบเขียนเอง ไม่เกิน 1000 ตัวอักษร
+                if (!this.other.owner || this.other.owner.length > 1000) {
+                    this.$refs.ownerRule.validate() 
+                    pass = false 
+                }
             }
+
+            // เฉพาะที่ดินเปล่า
             else {
-                if (this.main.landArea.rai == 0 && this.main.landArea.ngan == 0 && this.main.landArea.squareWa == 0) {
+                // เช็คทีขนาด่ดิน ต้องกรอก
+                if (!this.main.landArea.rai && !this.main.landArea.ngan && !this.main.landArea.squareWa) {
                     this.$refs.landArea.style.color = 'red'
                     pass = false
                 }
+                // เช็คทีขนาด่ดิน ต้องมากกว่า 0
+                if (this.main.landArea.rai <= 0 && this.main.landArea.ngan <= 0 && this.main.landArea.squareWa <= 0) {
+                    this.$refs.landArea.style.color = 'red'
+                    pass = false
+                }
+            }
+            // (ทั้งหมด) เช็คราคา ต้องกรอก ต้องมากกว่า 0
+            if (!this.main.price || this.main.price < 0) {
+                this.$refs.sellRule.validate()
+                pass = false
             }
 
             return pass
@@ -286,21 +324,24 @@ export default {
         },
     },
     watch: {
-        'main.landArea'() {
-            if (this.main.landArea.rai > 0 || this.main.landArea.ngan > 0 || this.main.landArea.squareWa > 0) {
-                this.$refs.landArea.style.color = '#666'
-            }
-        },
-        'main.floorNo'() {
-            if (this.main.allFloors) {
-                if (this.main.floorNo <= this.main.allFloors) this.$refs.floorsCheck.style.display = 'none'
-            }
-        },
-        'main.allFloors'() {
-            if (this.main.allFloors) {
-                if (this.main.floorNo <= this.main.allFloors) this.$refs.floorsCheck.style.display = 'none'
-            }
-        },
+        // ** does't work
+
+        // 'main.landArea'() {
+        //     if (this.main.landArea.rai > 0 || this.main.landArea.ngan > 0 || this.main.landArea.squareWa > 0) {
+        //         this.$refs.landArea.style.color = '#666'
+        //     }
+        // },
+
+        // 'main.floorNo'(newVal, oldVal) {
+        //     if (this.main.allFloors >= 0) {
+        //         if (this.main.floorNo <= newVal) this.$refs.floorsCheck.style.display = 'none'
+        //     }
+        // },
+        // 'main.allFloors'(newVal, oldVal) {
+        //     if (this.main.allFloors >= 0) {
+        //         if (newVal <= this.main.allFloors) this.$refs.floorsCheck.style.display = 'none'
+        //     }
+        // },
     }
 }
 </script>

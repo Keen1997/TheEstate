@@ -28,12 +28,6 @@
                 <v-list-tile-content>ที่ตั้ง:</v-list-tile-content>
             </v-list-tile>
 
-            <v-list-tile>
-                <v-list-tile-content class="align-start">ราคา:</v-list-tile-content>
-                <v-list-tile-content class="align-end" v-if='main.sellType=="ขาย"'>{{mainDetail.price}} บาท</v-list-tile-content>
-                <v-list-tile-content class="align-end" v-else>{{mainDetail.price}} บาทต่อเดือน</v-list-tile-content>
-            </v-list-tile>
-
             </v-flex></v-layout>
 
             <v-layout row wrap justify-center style='margin-bottom:20px'>
@@ -50,34 +44,40 @@
 
                 <v-list-tile>
                     <v-list-tile-content class="align-start">ตำบล/แขวง:</v-list-tile-content>
-                    <v-list-tile-content class="align-end">{{location.subDistrict}}</v-list-tile-content>
+                    <v-list-tile-content class="align-end">{{location.subDistrict ? location.subDistrict: 'ไม่ระบุ'}}</v-list-tile-content>
                 </v-list-tile>
 
                 <v-list-tile>
                     <v-list-tile-content class="align-start">ถนน:</v-list-tile-content>
-                    <v-list-tile-content class="align-end">{{location.road}}</v-list-tile-content>
+                    <v-list-tile-content class="align-end">{{location.road ? location.road: 'ไม่ระบุ'}}</v-list-tile-content>
                 </v-list-tile>
 
                 <v-list-tile>
                     <v-list-tile-content class="align-start">ซอย:</v-list-tile-content>
-                    <v-list-tile-content class="align-end">{{location.lane}}</v-list-tile-content>
+                    <v-list-tile-content class="align-end">{{location.lane ? location.lane: 'ไม่ระบุ'}}</v-list-tile-content>
                 </v-list-tile>
 
                 <v-list-tile>
                     <v-list-tile-content class="align-start">บ้านเลขที่:</v-list-tile-content>
-                    <v-list-tile-content class="align-end">{{location.houseNo}}</v-list-tile-content>
+                    <v-list-tile-content class="align-end">{{location.houseNo ? location.houseNo: 'ไม่ระบุ'}}</v-list-tile-content>
                 </v-list-tile>
 
                 <v-list-tile>
                     <v-list-tile-content class="align-start">รหัสไปรษณีย์:</v-list-tile-content>
-                    <v-list-tile-content class="align-end">{{location.postalCode}}</v-list-tile-content>
+                    <v-list-tile-content class="align-end">{{location.postalCode ? location.postalCode: 'ไม่ระบุ'}}</v-list-tile-content>
                 </v-list-tile>
             </v-flex>
             </v-layout>
 
+             <v-list-tile>
+                <v-list-tile-content class="align-start">ราคา:</v-list-tile-content>
+                <v-list-tile-content class="align-end" v-if='main.sellType=="ขาย"'>{{mainDetail.price}} บาท</v-list-tile-content>
+                <v-list-tile-content class="align-end" v-else>{{mainDetail.price}} บาทต่อเดือน</v-list-tile-content>
+            </v-list-tile>
+
             <v-list-tile>
                 <v-list-tile-content>ชื่อโครงการหรือชื่ออาคาร:</v-list-tile-content>
-                <v-list-tile-content class="align-end">{{main.projectName}}</v-list-tile-content>
+                <v-list-tile-content class="align-end">{{main.projectName? main.projectName: 'ไม่ระบุ'}}</v-list-tile-content>
             </v-list-tile>
             
         </v-card>
@@ -97,17 +97,17 @@
                 <v-flex md7>
                     <v-list-tile>
                         <v-list-tile-content class="align-start">ไร่:</v-list-tile-content>
-                        <v-list-tile-content class="align-end">{{mainDetail.landArea.rai}}</v-list-tile-content>
+                        <v-list-tile-content class="align-end">{{mainDetail.landArea.rai ? mainDetail.landArea.rai: '0'}}</v-list-tile-content>
                     </v-list-tile>
 
                     <v-list-tile>
                         <v-list-tile-content class="align-start">งาน:</v-list-tile-content>
-                        <v-list-tile-content class="align-end">{{mainDetail.landArea.ngan}}</v-list-tile-content>
+                        <v-list-tile-content class="align-end">{{mainDetail.landArea.ngan ? mainDetail.landArea.ngan: '0'}}</v-list-tile-content>
                     </v-list-tile>
 
                     <v-list-tile>
                         <v-list-tile-content class="align-start">ตารางวา:</v-list-tile-content>
-                        <v-list-tile-content class="align-end">{{mainDetail.landArea.squareWa}}</v-list-tile-content>
+                        <v-list-tile-content class="align-end">{{mainDetail.landArea.squareWa ? mainDetail.landArea.squareWa: '0'}}</v-list-tile-content>
                     </v-list-tile>
                 </v-flex>
                 </v-layout>
@@ -126,11 +126,11 @@
                     </v-list-tile>
                     <v-list-tile>
                         <v-list-tile-content>กว้าง x ยาว:</v-list-tile-content>
-                        <v-list-tile-content class="align-end">{{mainDetail.width}} x {{mainDetail.height}} ตารางเมตร</v-list-tile-content>
+                        <v-list-tile-content class="align-end">{{mainDetail.width ? mainDetail.width : 'ไม่ระบุ'}} x {{mainDetail.height ? mainDetail.height : 'ไม่ระบุ'}} ตารางเมตร</v-list-tile-content>
                     </v-list-tile>
                     <v-list-tile>
                         <v-list-tile-content>จำนวนชั้นทั้งหมด:</v-list-tile-content>
-                        <v-list-tile-content class="align-end">{{mainDetail.allFloors}} ฃั้น</v-list-tile-content>
+                        <v-list-tile-content class="align-end">{{mainDetail.allFloors ? mainDetail.allFloors + ' ฃั้น' : 'ไม่ระบุ'}} </v-list-tile-content>
                     </v-list-tile>
                     <v-list-tile v-if='main.estateType=="อาคารพาณิชย์" || main.estateType=="คอนโด"'>
                         <v-list-tile-content>อยู่ชั้น:</v-list-tile-content>
@@ -138,20 +138,20 @@
                     </v-list-tile>
                     <v-list-tile v-if='main.estateType!="อาคารพาณิชย์"'>
                         <v-list-tile-content>จำนวนห้องนอน:</v-list-tile-content>
-                        <v-list-tile-content class="align-end">{{mainDetail.bedrooms}} ห้อง</v-list-tile-content>
+                        <v-list-tile-content class="align-end">{{mainDetail.bedrooms ? mainDetail.bedrooms + ' ห้อง' : 'ไม่ระบุ'}}</v-list-tile-content>
                     </v-list-tile>
                     <v-list-tile v-if='main.estateType!="อาคารพาณิชย์"'>
                         <v-list-tile-content>จำนวนห้องน้ำ:</v-list-tile-content>
-                        <v-list-tile-content class="align-end">{{mainDetail.bathrooms}} ห้อง</v-list-tile-content>
+                        <v-list-tile-content class="align-end">{{mainDetail.bathrooms ? mainDetail.bathrooms + ' ห้อง' : 'ไม่ระบุ'}}</v-list-tile-content>
                     </v-list-tile>
                     <v-list-tile>
                         <v-list-tile-content>เฟอร์นิเจอร์:</v-list-tile-content>
-                        <v-list-tile-content class="align-end">{{mainDetail.furniture}}</v-list-tile-content>
+                        <v-list-tile-content class="align-end">{{mainDetail.furniture ? mainDetail.furniture : 'ไม่ระบุ'}}</v-list-tile-content>
                     </v-list-tile>
                     <v-list-tile>
                         <v-list-tile-content>ทิศ:</v-list-tile-content>
-                        <v-list-tile-content class="align-end">{{mainDetail.direction}}</v-list-tile-content>
-                    </v-list-tile>
+                        <v-list-tile-content class="align-end">{{mainDetail.direction ? mainDetail.direction : 'ไม่ระบุ'}}</v-list-tile-content>
+                    </v-list-tile> 
                 </v-flex>
                 </v-layout>
             </div>
@@ -193,6 +193,12 @@
             <v-btn style="margin:40px 0 30px 0; border-radius: 8px; font-size:18px;" color="primary" depressed @click='submit'>ยืนยัน</v-btn> 
         </v-layout>
         </v-flex>
+        <p>{{main}}</p><br><br>
+        <p>{{location}}</p><br><br>
+        <p>{{mainDetail}}</p><br><br>
+        <p>{{options}}</p><br><br>
+        <p>{{owner}}</p><br><br>
+        <p>{{numberOfImg}}</p><br><br>
         <v-flex md2></v-flex>
     </v-layout>   
 </template>
