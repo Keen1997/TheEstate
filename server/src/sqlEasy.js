@@ -28,6 +28,11 @@ const sqlEasy = function () {
         return this
     } 
 
+    let autoIncrement = function() {
+        sql += ' AUTO_INCREMENT' 
+        return this
+    } 
+
     let primaryKey = function() {
         sql += ' PRIMARY KEY' 
         return this
@@ -86,8 +91,8 @@ const sqlEasy = function () {
     let values = function(values) {
         sql += ' VALUES ('
         values.forEach(element => {
-            if (typeof element === 'string') sql += '"' + element + '"' + ', '
-            else sql += element + ', '
+            if (typeof element === 'string') sql += "'" + element + "'" + ", "
+            else sql += element + ", "
         })
         sql = sql.slice(0, -2)
         sql += ')'
@@ -144,6 +149,7 @@ const sqlEasy = function () {
         addColumnFirst,
         addColumn,
         notNull,
+        autoIncrement,
         primaryKey,
         endAddColumn,
 

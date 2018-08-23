@@ -2,6 +2,7 @@ const config = require('./config/config')
 const express = require('express')
 const bodyParser = require('body-parser')
 const morgan = require('morgan')
+const cors = require('cors')
 const validator = require('express-validator')
 
 process.env.NODE_ENV = config.env
@@ -13,6 +14,8 @@ if (process.env.NODE_ENV == 'development') app.use(morgan('dev'))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(validator())
+app.use(validator())
+app.use(cors())
 
 const con = require('./models')
 
@@ -26,4 +29,6 @@ require('./routes')(app)
 app.listen(config.port, () => {
     console.log('Server Started at port ' + config.port)
 })
+
+
 

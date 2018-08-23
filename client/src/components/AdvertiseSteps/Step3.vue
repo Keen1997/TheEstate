@@ -9,14 +9,18 @@
                 <v-layout wrap row justify-center>  
                 <v-flex sm12 md4 @click='$refs.imageInput.click()' style='margin-bottom: 20px; cursor: pointer;'>
                     <v-text-field box messages='เฉพาะรูปภาพเท่านั้น' v-model='input' append-icon='attach_file' @keyup='input="กดเพื่อเพิ่มรูปภาพ"' @keydown='input="กดเพื่อเพิ่มรูปภาพ"'></v-text-field>
-                    <input
-                        type="file"
-                        style="display: none"
-                        ref="imageInput"
-                        accept="image/*"
-                        @change="onFileSelected"
-                        multiple="multiple"
-                    >
+                    <form enctype="multipart/form-data" :onSubmit='upload'>
+                        <input
+                            type="file"
+                            style="display: none"
+                            ref="imageInput"
+                            accept="image/*"
+                            @change="onFileSelected"
+                            multiple="multiple"
+                        >
+                        <input type=submit value="UPLOAD" style='border-radius: 16px; color: #fff; background-color: #1976d2; padding: 10px 15px 10px 15px; margin-top:30px'>
+                    </form>
+                    
                 </v-flex>
                 </v-layout>
 
@@ -82,6 +86,11 @@ export default {
                 Reader.readAsDataURL(file)
             }
         },
+
+        upload() {
+
+        },
+
         chooseMainImage() {
             
         },

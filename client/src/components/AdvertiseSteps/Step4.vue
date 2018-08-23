@@ -4,7 +4,7 @@
         <v-flex md4>
         <v-card style='margin-top:10px'><v-layout row wrap justify-center>
             <v-card-title><h4>โครงการ</h4></v-card-title>
-            <v-card-title>{{main.name}}</v-card-title>
+            <v-card-title>{{main.title}}</v-card-title>
         </v-layout></v-card>   
 
         <v-card style='margin-top:60px'>
@@ -71,15 +71,15 @@
 
              <v-list-tile>
                 <v-list-tile-content class="align-start">ราคา:</v-list-tile-content>
-                <v-list-tile-content class="align-end" v-if='main.sellType=="ขาย"'>{{mainDetail.price}} บาท</v-list-tile-content>
+                <v-list-tile-content class="align-end" v-if='main.sellType=="ขาย"'>{{formatNumber(mainDetail.price)}} บาท</v-list-tile-content>
                 <v-list-tile-content class="align-end" v-else>{{mainDetail.price}} บาทต่อเดือน</v-list-tile-content>
             </v-list-tile>
 
             <v-list-tile>
                 <v-list-tile-content>ชื่อโครงการหรือชื่ออาคาร:</v-list-tile-content>
-                <v-list-tile-content class="align-end">{{main.projectName? main.projectName: 'ไม่ระบุ'}}</v-list-tile-content>
+                <v-list-tile-content class="align-end">{{main.buildingName? main.buildingName: 'ไม่ระบุ'}}</v-list-tile-content>
             </v-list-tile>
-            
+
         </v-card>
 
         <v-card style='margin-top:60px'>
@@ -118,11 +118,11 @@
                 <v-flex md10>
                     <v-list-tile v-if='main.estateType!="อาคารพาณิชย์" && main.estateType!="คอนโด"'>
                         <v-list-tile-content>ขนาดที่ดิน:</v-list-tile-content>
-                        <v-list-tile-content class="align-end">{{mainDetail.houseArea}} ตารางเมตร</v-list-tile-content>
+                        <v-list-tile-content class="align-end">{{formatNumber(mainDetail.allArea)}} ตารางเมตร</v-list-tile-content>
                     </v-list-tile>
                     <v-list-tile>
                         <v-list-tile-content>พื้นที่ใช้สอย:</v-list-tile-content>
-                        <v-list-tile-content class="align-end">{{mainDetail.area}} ตารางเมตร</v-list-tile-content>
+                        <v-list-tile-content class="align-end">{{formatNumber(mainDetail.useArea)}} ตารางเมตร</v-list-tile-content>
                     </v-list-tile>
                     <v-list-tile>
                         <v-list-tile-content>กว้าง x ยาว:</v-list-tile-content>
@@ -193,18 +193,13 @@
             <v-btn style="margin:40px 0 30px 0; border-radius: 8px; font-size:18px;" color="primary" depressed @click='submit'>ยืนยัน</v-btn> 
         </v-layout>
         </v-flex>
-        <p>{{main}}</p><br><br>
-        <p>{{location}}</p><br><br>
-        <p>{{mainDetail}}</p><br><br>
-        <p>{{options}}</p><br><br>
-        <p>{{owner}}</p><br><br>
-        <p>{{numberOfImg}}</p><br><br>
         <v-flex md2></v-flex>
     </v-layout>   
 </template>
 
 <script>
 import advertiseStore from '@/stores/advertiseStore'
+import api from '../../api'
 
 export default {
     name: "Step4",
@@ -229,11 +224,28 @@ export default {
         }
     },
     methods: {
+        formatNumber(number) {
+            if (number) {
+                let parts = number.toString().split(".")
+                parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                return parts.join(".")
+            }  
+        },
         prevStep() {
             this.$emit('prevStep')
         },
         submit() {
-
+            api().post('advertiseSubmit', {
+                main: this.main, 
+                location: this.location, 
+                mainDetail: this.mainDetail, 
+                options: this.options,
+                owner: this.owner,
+            }).then((res) => {
+                console.log(res.data)
+            }).catch((res) => {
+                console.log(res.data.errors)
+            })
         }
     }
 }

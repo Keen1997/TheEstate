@@ -17,6 +17,9 @@
                     <v-flex xs12 sm2 d-flex><v-text-field suffix="ไร่" v-model='main.landArea.rai' type='number' min=1 placeholder="0"></v-text-field></v-flex>
                 </v-layout>
                 <v-layout wrap row justify-center>
+                    <v-flex xs12 sm2 d-flex><span style="color: #666;">{{main.landArea.rai>999 ? '( '+ formatNumber(main.landArea.rai) + ' )' : ''}}</span></v-flex>
+                </v-layout>
+                <v-layout wrap row justify-center>
                     <v-flex xs12 sm2 d-flex><v-text-field suffix="งาน" v-model='main.landArea.ngan' type='number' min=1 placeholder="0"></v-text-field></v-flex>
                 </v-layout>
                 <v-layout wrap row justify-center>
@@ -26,14 +29,16 @@
 
             <div v-else>
                 <v-layout wrap row justify-center v-if='estateType!="อาคารพาณิชย์" && estateType!="คอนโด"'>  
-                    <v-flex xs12 sm3 d-flex><v-form ref='houseArea'>
-                        <v-text-field label="ขนาดที่ดิน (ตารางเมตร) *" v-model='main.houseArea' placeholder="0" type='number' min=1 :rules="[() => !!main.houseArea || 'จำเป็น', () => main.houseArea >= 10 || '10 ขึ้นไป']"></v-text-field>
+                    <v-flex xs12 sm3 d-flex><v-form ref='allArea'>
+                        <v-text-field label="พื้นที่ทั้งหมด (ตารางเมตร) *" v-model='main.allArea' placeholder="0" type='number' min=1 :rules="[() => !!main.allArea || 'จำเป็น', () => main.allArea >= 1 || '1 ขึ้นไป']"></v-text-field>
+                        <span style="color: #666;">{{main.allArea>999 ? '( '+ formatNumber(main.allArea) + ' )' : ''}}</span> 
                     </v-form></v-flex>
                 </v-layout>
                 <v-layout style="margin-bottom:40px;"/>
                 <v-layout wrap row justify-center>  
-                    <v-flex xs12 sm3 d-flex><v-form ref='ruleArea'>
-                        <v-text-field label="พื้นที่ใช้สอย *" suffix="ตารางเมตร" v-model='main.area' placeholder="0" type='number' min=1 :rules="[() => !!main.area || 'จำเป็น', () => main.area >= 10 || '10 ขึ้นไป']"></v-text-field>
+                    <v-flex xs12 sm3 d-flex><v-form ref='useAreaRule'>
+                        <v-text-field label="พื้นที่ใช้สอย *" suffix="ตารางเมตร" v-model='main.useArea' placeholder="0" type='number' min=1 :rules="[() => !!main.useArea || 'จำเป็น', () => main.useArea >= 1 || '1 ขึ้นไป']"></v-text-field>
+                        <span style="color: #666;">{{main.useArea>999 ? '( '+ formatNumber(main.useArea) + ' )' : ''}}</span>
                     </v-form></v-flex>
                 </v-layout>
                 <v-layout wrap row justify-center> 
@@ -41,11 +46,11 @@
                     <v-flex xs6 sm2 d-flex><v-text-field label="ยาว" v-model='main.height' suffix="เมตร" type='number'></v-text-field></v-flex>
                 </v-layout>
                 <v-layout wrap row justify-center> 
-                    <v-flex xs6 sm2 d-flex style="margin-right:24px;"><v-form ref='ruleAllFloor'>
+                    <v-flex xs6 sm2 d-flex style="margin-right:24px;"><v-form ref='allFloorRule'>
                         <v-text-field label="จำนวนชั้นทั้งหมด" v-model='main.allFloors' type='number' min=1 :rules="[() => main.allFloors <= 300 || 'จำวนวนชั้นมากเกินไป']"></v-text-field>
                     </v-form></v-flex>
-                    <v-flex xs6 sm2 d-flex v-if='estateType=="อาคารพาณิชย์" || estateType=="คอนโด"'><v-form ref='ruleFloorNo'>
-                        <v-text-field flat label="อยู่ชั้น *" v-model='main.floorNo' type='number' min=1 :rules="[() => main.floorNo >=1 || '1 ขึ้นไป']"></v-text-field><span style="display:none; color: red; font-style:italic" ref='floorsCheck'>เลขชั้นที่อยู่ต้องน้อยกว่าจำนวนชั้นทั้งหมด</span>
+                    <v-flex xs6 sm2 d-flex v-if='estateType=="อาคารพาณิชย์" || estateType=="คอนโด"'><v-form ref='floorNoRule'>
+                        <v-text-field flat label="อยู่ชั้น *" v-model='main.floorNo' type='number' min=1 :rules="[() => main.floorNo >=1 || '1 ขึ้นไป', () => main.floorNo <=300 || 'ชั้นมากเกินไป']"></v-text-field><span style="display:none; color: red; font-style:italic" ref='floorsCheck'>เลขชั้นที่อยู่ต้องน้อยกว่าจำนวนชั้นทั้งหมด</span>
                     </v-form></v-flex>
                 </v-layout>
                 <v-layout style="margin-bottom:40px;"/>
@@ -70,9 +75,12 @@
 
                 <div v-if='sellType=="ขาย"'>
                     <v-layout wrap row justify-center>  
+                        <v-flex xs12 sm3 d-flex><span style="color: #666;">{{main.price>999 ? '( '+ formatNumber(main.price) + ' บาท' + ' )' : ''}}</span></v-flex>
+                    </v-layout>
+                    <v-layout wrap row justify-center>  
                         <v-flex xs12 sm3 d-flex><v-form ref='sellRule'><v-text-field v-model='main.price' label="ราคาขาย" suffix='บาท' :rules="[() => main.price > 0 || 'จำเป็น']"></v-text-field></v-form></v-flex>
                     </v-layout>
-
+                    
                      <v-layout wrap row justify-center style='padding:0 10px 0 10px;' v-if='estateType=="ที่ดินเปล่า"'>  
                         <v-flex xs12 sm1 d-flex><v-layout>
                             <h4 style='color: #444; font-size: 16px; font-weight: normal;' placeholder="0">{{sellPerLandArea}}</h4>
@@ -84,7 +92,7 @@
 
                     <v-layout wrap row justify-center style='padding:0 10px 0 10px;' v-else>  
                         <v-flex xs12 sm1 d-flex><v-layout>
-                            <h4 style='color: #444; font-size: 16px; font-weight: normal;' placeholder="0">{{sellPerArea}}</h4>
+                            <h4 style='color: #444; font-size: 16px; font-weight: normal;' placeholder="0">{{sellPerUseArea}}</h4>
                         </v-layout></v-flex>
                         <v-flex xs12 sm2 d-flex><v-layout justify-end>
                             <h4 style='color: #444; font-size: 16px; font-weight: normal;'>ต่อตารางเมตร</h4>
@@ -115,7 +123,6 @@
                         </v-layout></v-flex>
                     </v-layout>
                 </div> 
-
             </v-container>
             </v-card>  
 
@@ -210,10 +217,10 @@ export default {
     data: () => ({
         main: {
             price: '',
-            area: '', //เมตร
+            useArea: '', //เมตร
             width: '',
             height: '',
-            houseArea: '',
+            allArea: '',
             landArea: {
                 rai: null,
                 ngan: null,
@@ -241,16 +248,21 @@ export default {
         estateType() {
             return advertiseStore.state.data.main.estateType
         },
-        sellPerArea() {
-            if (this.main.price>0 & this.main.area>0) return Math.round(this.main.price/this.main.area * 100) / 100
+        sellPerUseArea() {
+            if (this.main.price>0 & this.main.useArea>0) return Math.round(this.main.price/this.main.useArea * 100) / 100
             else return ''
         },
         sellPerLandArea() {
             if (this.main.price>0 && this.main.landArea.rai>0 || this.main.landArea.ngan>0 || this.main.landArea.squareWa>0) 
                 return Math.round(this.main.price/(this.main.landArea.rai * 400 + this.main.landArea.ngan * 100 + 1 * this.main.landArea.squareWa) * 100) / 100       
-        }
+        },
     },
     methods: {
+        formatNumber(number) {
+            let parts = number.toString().split(".")
+            parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+            return parts.join(".")
+        },
         checkData() {
             let pass = true
 
@@ -258,12 +270,12 @@ export default {
             if (this.estateType != 'ที่ดินเปล่า') {
                 if (this.estateType == 'คอนโด' || this.estateType == 'อาคารพาณิชย์') {
                     // เช็คหมายเลขชั้น
-                    this.$refs.ruleFloorNo.validate()
-                    // เช็คหมายเลขชั้นต้องมากกว่า 0
-                    if (this.main.floorNo <= 0) pass = false 
+                    this.$refs.floorNoRule.validate()
+                    // เช็คหมายเลขชั้นต้องมากกว่า 0 ชั้นต้องไม่มากเกินไป
+                    if (this.main.floorNo <= 0 || this.main.floorNo > 300) pass = false 
                     // เช็คจำนวนชั้นทั้งหมดสูงสุด (ถ้ากรอก)
                     if (this.main.allFloors) {  
-                        this.$refs.ruleAllFloor.validate()
+                        this.$refs.allFloorRule.validate()
                         if (this.main.allFloors > 300) pass = false
 
                         // ** does't work เช็คหมายเลขชั้นต้องน้อยกว่าเช็คจำนวนชั้นทั้งหมด
@@ -276,14 +288,14 @@ export default {
                     }
                 }
                 if (this.estateType != 'คอนโด' && this.estateType != 'อาคารพาณิชย์') {
-                    // เช็คพื้นที่ทั้งหมด ต้องกรอก ไม่น้อยกว่า 10 ตารางเมตร (ไม่ใช่คอนโด, อาคารพาณิชย์)
-                    this.$refs.houseArea.validate() 
-                    if (!this.main.houseArea || this.main.houseArea < 10) pass = false  
+                    // เช็คพื้นที่ทั้งหมด ต้องกรอก ไม่น้อยกว่า 1 ตารางเมตร (ไม่ใช่คอนโด, อาคารพาณิชย์)
+                    this.$refs.allArea.validate() 
+                    if (!this.main.allArea || this.main.allArea < 1) pass = false  
                     // พื้นที่ใช้สอยต้องน้อยกว่าพื้นที่ทั้งหมด ยังไม่ได้ทำ
                 }
                 // เช็คพื้นที่ใช้สอย
-                this.$refs.ruleArea.validate()
-                if(this.main.area < 10) pass = false
+                this.$refs.useAreaRule.validate()
+                if(this.main.useArea < 1) pass = false
                 // รายละเอียดแบบเขียนเอง ไม่เกิน 1000 ตัวอักษร
                 if (!this.other.owner || this.other.owner.length > 1000) {
                     this.$refs.ownerRule.validate() 
@@ -321,9 +333,27 @@ export default {
                 this.$emit('nextStep')
                 advertiseStore.dispatch('step2next', {mainDetail: this.main, options: this.other.options, owner: this.other.owner})
             }
-        },
+        }
     },
     watch: {
+
+        'main.landArea.squareWa'() {
+            if (this.main.landArea.squareWa >= 100) {
+                let ngan = Math.floor(this.main.landArea.squareWa / 100)
+                let sqWa = this.main.landArea.squareWa % 100
+                this.main.landArea.squareWa = sqWa
+                this.main.landArea.ngan+= ngan
+            }
+        },
+        'main.landArea.ngan'() {
+            if (this.main.landArea.ngan >= 4) {
+                let rai = Math.floor(this.main.landArea.ngan / 4)
+                let ngan = this.main.landArea.ngan % 4
+                this.main.landArea.ngan = ngan
+                this.main.landArea.rai = rai
+            }
+        }
+
         // ** does't work
 
         // 'main.landArea'() {

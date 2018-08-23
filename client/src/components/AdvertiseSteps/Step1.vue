@@ -26,10 +26,11 @@
                 <v-layout justify-center>
                 <v-flex sm12 md9><v-form ref='rule3'>
                     <v-text-field 
-                    v-model="main.name" :counter="120" label="หัวข้อประกาศ *" 
+                    v-model="main.title" :counter="120" label="หัวข้อประกาศ *" 
                     :rules="[
-                    () => !!main.name || 'จำเป็น',
-                    () => main.name.length <= 120 || 'ไม่เกิน 120 ตัวอักษร',]">
+                    () => !!main.title || 'จำเป็น',
+                    () => main.title.length <= 120 || 'ไม่เกิน 120 ตัวอักษร',
+                    () => main.title.length > 20 || 'ต้องมากกว่า 20 ตัวอักษร',]">
                     </v-text-field>
                 </v-form></v-flex>
                 </v-layout>
@@ -68,7 +69,7 @@
                 <v-layout wrap row justify-center>
                     <v-flex xs12 sm9 d-flex>
                         <v-text-field
-                        v-model="main.projectName" :counter="50">
+                        v-model="main.buildingName" :counter="50">
                         <div slot="label">ชื่อโครงการหรือชื่ออาคาร <small>(ถ้ามี)</small></div>
                         </v-text-field>
                     </v-flex>
@@ -102,10 +103,10 @@ export default {
   name: "Step1",
   data: () => ({
     main: {
-        name: '',
+        title: '',
         sellType: '',
         estateType: '',
-        projectName: '',
+        buildingName: '',
     },
     location: {
         province: '',
@@ -135,7 +136,7 @@ export default {
             
             if (!this.main.estateType) pass = false
 
-            if (!this.main.name) pass = false
+            if (!this.main.title || this.main.title.length > 120 || this.main.title.length < 20) pass = false
 
             if (!this.location.province) {
                 this.$refs.provinceCheck.style.color = 'red'
